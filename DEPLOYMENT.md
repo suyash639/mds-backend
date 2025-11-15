@@ -73,8 +73,7 @@ docker push your-registry/mds-api:1.0.0
 Set these in production:
 
 \`\`\`
-MONGODB_URL=mongodb://prod-user:password@prod-mongo-host:27017/
-DB_NAME=mds_db_prod
+
 ENVIRONMENT=production
 DEBUG=false
 LOG_LEVEL=WARNING
@@ -86,8 +85,6 @@ API_KEY=secure-api-key
 \`\`\`bash
 docker run -d \
   -p 8000:8000 \
-  -e MONGODB_URL="mongodb://admin:password@mongo:27017/" \
-  -e DB_NAME="mds_db" \
   -e ENVIRONMENT="production" \
   --name mds-api \
   mds-api:1.0.0
@@ -98,8 +95,6 @@ docker run -d \
 \`\`\`bash
 docker run -d \
   -p 8000:8000 \
-  -e MONGODB_URL="mongodb+srv://user:password@cluster.mongodb.net/" \
-  -e DB_NAME="mds_db" \
   --name mds-api \
   mds-api:1.0.0
 \`\`\`
@@ -118,8 +113,7 @@ kubectl create configmap mds-config \
 
 \`\`\`bash
 kubectl create secret generic mds-secrets \
-  --from-literal=MONGODB_URL='mongodb://user:password@mongodb:27017/' \
-  --from-literal=API_KEY='secure-key'
+ 
 \`\`\`
 
 ### Deploy
@@ -162,7 +156,7 @@ docker service create \
   --name mds-api \
   --replicas 3 \
   -p 8000:8000 \
-  -e MONGODB_URL="mongodb://mongo:27017/" \
+\
   mds-api:1.0.0
 \`\`\`
 
@@ -183,8 +177,7 @@ docker ps | grep mongodb
 
 Test connection:
 \`\`\`bash
-mongosh mongodb://admin:password@localhost:27017/
-\`\`\`
+\`\`
 
 ### API Not Responding
 

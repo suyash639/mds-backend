@@ -172,7 +172,7 @@ python -m memory_profiler main.py
 Manual migrations:
 \`\`\`bash
 # Connect to MongoDB
-mongosh mongodb://admin:password@localhost:27017/
+
 
 # Run migrations manually
 db.questions.createIndex({category_id: 1})

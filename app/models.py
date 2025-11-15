@@ -1,25 +1,26 @@
 from pydantic import BaseModel, Field, validator
 from typing import List, Optional, Dict
 from datetime import datetime
+from pydantic_core import core_schema
+from pydantic import GetCoreSchemaHandler
 from enum import Enum
 from bson import ObjectId
 
-class PyObjectId(ObjectId):
+class PyObjectId(str):
     @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
+    def __get_pydantic_core_schema__(
+            cls, _source_type, handler: GetCoreSchemaHandler
+    ) -> core_schema.CoreSchema:
+        return core_schema.no_info_after_validator_function(
+            cls.validate,
+            schema=core_schema.str_schema()
+        )
 
     @classmethod
     def validate(cls, v):
         if not ObjectId.is_valid(v):
-            raise ValueError(f"Invalid ObjectId: {v}")
-        return ObjectId(v)
-
-    @classmethod
-    def __get_pydantic_json_schema__(cls, core_schema, handler):
-        schema = handler(core_schema)
-        schema.update(type="string")
-        return schema
+            raise ValueError("Invalid ObjectId")
+        return str(v)
 
 class DifficultyLevel(str, Enum):
     EASY = "easy"
